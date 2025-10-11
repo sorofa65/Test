@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <!-- SEO Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to ASCII Art Converter - Free Online Tool | Create Text Art from Images</title>
+    <meta name="description" content="Convert any image to ASCII art instantly. Free online tool that transforms photos into text-based art. Perfect for developers, designers, and social media.">
+    <meta name="keywords" content="ascii art, image to text, text art, image converter, online tool, free converter">
+    <meta name="author" content="Your Name">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Image to ASCII Art Converter - Free Online Tool">
+    <meta property="og:description" content="Convert images to ASCII art instantly. Create beautiful text-based artwork from your photos.">
+    <meta property="og:type" content="website">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .ascii-output {
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+            letter-spacing: 0;
+        }
+        .drop-zone {
+            border: 2px dashed #cbd5e0;
+            transition: all 0.3s ease;
+        }
+        .drop-zone.dragover {
+            border-color: #667eea;
+            background-color: #f7fafc;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header Section -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                    Image to ASCII Art Converter
+                </h1>
+                <p class="text-xl md:text-2xl opacity-90">
+                    Transform Your Images into Beautiful Text Art
+                </p>
+                <p class="mt-4 text-lg opacity-80 max-w-2xl mx-auto">
+                    Free online tool that converts any image to ASCII art instantly. Perfect for social media, coding projects, and digital art.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Upload Section -->
+        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Upload Your Image</h2>
+                <p class="text-gray-600">Supported formats: JPG, PNG, GIF, WebP</p>
+            </div>
+
+            <!-- Drop Zone -->
+            <div id="dropZone" class="drop-zone rounded-lg p-8 text-center cursor-pointer mb-6">
+                <div class="py-12">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="mt-4">
+                        <p class="text-lg font-medium text-gray-900">Drop your image here</p>
+                        <p class="text-gray-500">or <span class="text-blue-600 hover:text-blue-500">click to browse</span></p>
+                    </div>
+                </div>
+                <input type="file" id="fileInput" class="hidden" accept="image/*">
+            </div>
+
+            <!-- Controls -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Width (characters)</label>
+                    <input type="range" id="widthSlider" min="50" max="200" value="100" class="w-full">
+                    <span id="widthValue" class="text-sm text-gray-600">100</span>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Character Set</label>
+                    <select id="charSet" class="w-full p-2 border border-gray-300 rounded-md">
+                        <option value="standard">Standard (@#S%?*+;:,,.)</option>
+                        <option value="blocks">Blocks (█▓▒░ )</option>
+                        <option value="simple">Simple (01)</option>
+                        <option value="detailed">Detailed (@%#*+=-:. )</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Invert Colors</label>
+                    <label class="inline-flex items-center mt-2">
+                        <input type="checkbox" id="invertColors" class="rounded border-gray-300 text-blue-600 shadow-sm">
+                        <span class="ml-2 text-gray-600">Invert</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button id="convertBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 transform hover:scale-105">
+                    Convert to ASCII
+                </button>
+                <button id="downloadBtn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 transform hover:scale-105">
+                    Download ASCII Art
+                </button>
+                <button id="copyBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 transform hover:scale-105">
+                    Copy to Clipboard
+                </button>
+            </div>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Original Image -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Original Image</h3>
+                <div id="imagePreview" class="border-2 border-dashed border-gray-300 rounded-lg p-4 min-h-64 flex items-center justify-center">
+                    <p class="text-gray-500 text-center">Your image will appear here</p>
+                </div>
+            </div>
+
+            <!-- ASCII Art Output -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">ASCII Art Result</h3>
+                <div class="border-2 border-gray-200 rounded-lg p-4 bg-gray-900">
+                    <pre id="asciiOutput" class="ascii-output text-green-400 text-xs overflow-auto max-h-96 min-h-64 whitespace-pre"></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- How It Works Section -->
+    <section class="bg-gray-100 py-12 mt-12">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">How It Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="text-center">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">📤</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">1. Upload Image</h3>
+                    <p class="text-gray-600">Select any image from your device or drag and drop it</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">⚙️</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">2. Customize Settings</h3>
+                    <p class="text-gray-600">Adjust width, character set, and other parameters</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">📥</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">3. Download & Share</h3>
+                    <p class="text-gray-600">Save your ASCII art or copy to clipboard</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 Image to ASCII Art Converter. All rights reserved.</p>
+            <p class="mt-2 text-gray-400">Free online tool for creating text-based art from images</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // DOM Elements
+        const fileInput = document.getElementById('fileInput');
+        const dropZone = document.getElementById('dropZone');
+        const convertBtn = document.getElementById('convertBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const asciiOutput = document.getElementById('asciiOutput');
+        const imagePreview = document.getElementById('imagePreview');
+        const widthSlider = document.getElementById('widthSlider');
+        const widthValue = document.getElementById('widthValue');
+        const charSet = document.getElementById('charSet');
+        const invertColors = document.getElementById('invertColors');
+
+        let currentImage = null;
+
+        // Character Sets
+        const charSets = {
+            standard: '@#S%?*+;:,,`. ',
+            blocks: '█▓▒░ ',
+            simple: '01',
+            detailed: '@%#*+=-:. '
+        };
+
+        // Event Listeners
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleImageUpload(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleImageUpload(e.target.files[0]);
+            }
+        });
+
+        widthSlider.addEventListener('input', (e) => {
+            widthValue.textContent = e.target.value;
+        });
+
+        convertBtn.addEventListener('click', convertToAscii);
+        downloadBtn.addEventListener('click', downloadAscii);
+        copyBtn.addEventListener('click', copyToClipboard);
+
+        // Functions
+        function handleImageUpload(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Please select a valid image file.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                currentImage = new Image();
+                currentImage.onload = () => {
+                    // Display image preview
+                    imagePreview.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'max-w-full max-h-64 rounded';
+                    imagePreview.appendChild(img);
+                };
+                currentImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function convertToAscii() {
+            if (!currentImage) {
+                alert('Please select an image first.');
+                return;
+            }
+
+            const width = parseInt(widthSlider.value);
+            const selectedChars = charSets[charSet.value];
+            const invert = invertColors.checked;
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Calculate height maintaining aspect ratio
+            const height = Math.floor((currentImage.height / currentImage.width) * width * 0.5);
+            
+            canvas.width = width;
+            canvas.height = height;
+
+            ctx.drawImage(currentImage, 0, 0, width, height);
+            const imageData = ctx.getImageData(0, 0, width, height);
+
+            let asciiArt = '';
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const index = (y * width + x) * 4;
+                    const r = imageData.data[index];
+                    const g = imageData.data[index + 1];
+                    const b = imageData.data[index + 2];
+                    
+                    // Calculate brightness
+                    let brightness = (r + g + b) / 3;
+                    if (invert) brightness = 255 - brightness;
+                    
+                    // Map brightness to character
+                    const charIndex = Math.floor((brightness / 255) * (selectedChars.length - 1));
+                    asciiArt += selectedChars[charIndex];
+                }
+                asciiArt += '\n';
+            }
+
+            asciiOutput.textContent = asciiArt;
+        }
+
+        function downloadAscii() {
+            const asciiText = asciiOutput.textContent;
+            if (!asciiText) {
+                alert('No ASCII art to download. Please convert an image first.');
+                return;
+            }
+
+            const blob = new Blob([asciiText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ascii-art.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function copyToClipboard() {
+            const asciiText = asciiOutput.textContent;
+            if (!asciiText) {
+                alert('No ASCII art to copy. Please convert an image first.');
+                return;
+            }
+
+            navigator.clipboard.writeText(asciiText).then(() => {
+                alert('ASCII art copied to clipboard!');
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
