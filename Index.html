@@ -4,18 +4,16 @@
     <!-- SEO Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to ASCII Art Converter - Free Online Tool | Create Text Art from Images</title>
-    <meta name="description" content="Convert any image to ASCII art instantly. Free online tool that transforms photos into text-based art. Perfect for developers, designers, and social media.">
-    <meta name="keywords" content="ascii art, image to text, text art, image converter, online tool, free converter">
+    <title>Image to ASCII Art Converter - Fixed Character Size | Create Perfect Text Art</title>
+    <meta name="description" content="Convert images to ASCII art with fixed character size. Perfect text art that maintains quality on all devices. No more small unreadable text!">
+    <meta name="keywords" content="ascii art, fixed character size, text art, image converter, mobile friendly">
     <meta name="author" content="Your Name">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Image to ASCII Art Converter - Free Online Tool">
-    <meta property="og:description" content="Convert images to ASCII art instantly. Create beautiful text-based artwork from your photos.">
-    <meta property="og:type" content="website">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- HTML2Canvas for Screenshot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <!-- Custom Styles -->
     <style>
@@ -26,6 +24,7 @@
             font-family: 'Courier New', monospace;
             line-height: 1;
             letter-spacing: 0;
+            white-space: pre;
         }
         .drop-zone {
             border: 2px dashed #cbd5e0;
@@ -35,143 +34,211 @@
             border-color: #667eea;
             background-color: #f7fafc;
         }
+        
+        /* Fixed Character Size - No scaling */
+        .fixed-ascii {
+            font-size: 12px;
+            line-height: 1;
+            transform: none !important;
+        }
+        
+        /* Container that allows horizontal scroll */
+        .ascii-container {
+            overflow: auto;
+            max-height: 70vh;
+        }
+        
+        /* Custom scrollbar */
+        .ascii-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .ascii-container::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        .ascii-container::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+        
+        /* Character size preview */
+        .char-preview {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #0f0;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Header Section -->
     <header class="gradient-bg text-white shadow-lg">
-        <div class="container mx-auto px-4 py-8">
+        <div class="container mx-auto px-4 py-6 md:py-8">
             <div class="text-center">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                    Image to ASCII Art Converter
+                <h1 class="text-2xl md:text-4xl font-bold mb-3 md:mb-4">
+                    Fixed Size ASCII Art Converter
                 </h1>
-                <p class="text-xl md:text-2xl opacity-90">
-                    Transform Your Images into Beautiful Text Art
+                <p class="text-base md:text-xl opacity-90 mb-2">
+                    Perfect ASCII Art - Same Size on All Devices
                 </p>
-                <p class="mt-4 text-lg opacity-80 max-w-2xl mx-auto">
-                    Free online tool that converts any image to ASCII art instantly. Perfect for social media, coding projects, and digital art.
+                <p class="text-sm md:text-lg opacity-80 max-w-2xl mx-auto">
+                    Characters never shrink! Scroll to view large artworks. Mobile-friendly with fixed character size.
                 </p>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
+    <main class="container mx-auto px-3 md:px-4 py-6 md:py-8">
         <!-- Upload Section -->
-        <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 mb-8">
-            <div class="text-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Upload Your Image</h2>
-                <p class="text-gray-600">Supported formats: JPG, PNG, GIF, WebP</p>
+        <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-4 md:p-6 mb-6 md:mb-8">
+            <div class="text-center mb-4 md:mb-6">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-2">Upload Your Image</h2>
+                <p class="text-xs md:text-sm text-gray-600">Fixed character size - Scroll to view large artworks</p>
             </div>
 
             <!-- Drop Zone -->
-            <div id="dropZone" class="drop-zone rounded-lg p-8 text-center cursor-pointer mb-6">
-                <div class="py-12">
-                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+            <div id="dropZone" class="drop-zone rounded-lg p-4 md:p-8 text-center cursor-pointer mb-4 md:mb-6">
+                <div class="py-8 md:py-12">
+                    <svg class="mx-auto h-8 w-8 md:h-12 md:w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <div class="mt-4">
-                        <p class="text-lg font-medium text-gray-900">Drop your image here</p>
-                        <p class="text-gray-500">or <span class="text-blue-600 hover:text-blue-500">click to browse</span></p>
+                    <div class="mt-3 md:mt-4">
+                        <p class="text-base md:text-lg font-medium text-gray-900">Drop your image here</p>
+                        <p class="text-xs md:text-sm text-gray-500">or <span class="text-blue-600 hover:text-blue-500">click to browse</span></p>
                     </div>
                 </div>
                 <input type="file" id="fileInput" class="hidden" accept="image/*">
             </div>
 
             <!-- Controls -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Width (characters)</label>
-                    <input type="range" id="widthSlider" min="50" max="200" value="100" class="w-full">
-                    <span id="widthValue" class="text-sm text-gray-600">100</span>
+                    <label class="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">
+                        Artwork Size <span class="text-blue-600" id="sizeLabel">Medium</span>
+                    </label>
+                    <input type="range" id="sizeSlider" min="1" max="4" value="2" class="w-full">
+                    <div class="flex justify-between text-xs text-gray-600 mt-1">
+                        <span>Small</span>
+                        <span>Large</span>
+                    </div>
                 </div>
+                
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Character Set</label>
-                    <select id="charSet" class="w-full p-2 border border-gray-300 rounded-md">
+                    <label class="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Character Set</label>
+                    <select id="charSet" class="w-full p-2 border border-gray-300 rounded-md text-xs md:text-sm">
                         <option value="standard">Standard (@#S%?*+;:,,.)</option>
                         <option value="blocks">Blocks (█▓▒░ )</option>
                         <option value="simple">Simple (01)</option>
                         <option value="detailed">Detailed (@%#*+=-:. )</option>
+                        <option value="art">Art (♠♥♦♣•○●)</option>
+                        <option value="bold">Bold (▓▒░▄▀■)</option>
                     </select>
                 </div>
+                
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Invert Colors</label>
-                    <label class="inline-flex items-center mt-2">
+                    <label class="block text-xs md:text-sm font-medium text-gray-700 mb-1 md:mb-2">Character Size</label>
+                    <div class="flex items-center space-x-2">
+                        <span class="char-preview text-xs">A</span>
+                        <input type="range" id="charSizeSlider" min="8" max="16" value="12" class="flex-1">
+                        <span class="char-preview text-base">A</span>
+                    </div>
+                    <div class="text-center text-xs text-gray-600 mt-1" id="charSizeValue">12px</div>
+                </div>
+                
+                <div class="flex flex-col justify-center space-y-2">
+                    <label class="flex items-center">
                         <input type="checkbox" id="invertColors" class="rounded border-gray-300 text-blue-600 shadow-sm">
-                        <span class="ml-2 text-gray-600">Invert</span>
+                        <span class="ml-2 text-xs md:text-sm text-gray-600">Invert Colors</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" id="enhanceDetails" class="rounded border-gray-300 text-blue-600 shadow-sm" checked>
+                        <span class="ml-2 text-xs md:text-sm text-gray-600">Enhance Details</span>
                     </label>
                 </div>
             </div>
 
+            <!-- Artwork Size Presets -->
+            <div class="grid grid-cols-4 gap-2 mb-4">
+                <button class="preset-btn bg-blue-100 text-blue-700 py-2 rounded text-xs font-medium" data-size="1">
+                    Small (80×40)
+                </button>
+                <button class="preset-btn bg-blue-600 text-white py-2 rounded text-xs font-medium" data-size="2">
+                    Medium (120×60)
+                </button>
+                <button class="preset-btn bg-blue-100 text-blue-700 py-2 rounded text-xs font-medium" data-size="3">
+                    Large (160×80)
+                </button>
+                <button class="preset-btn bg-blue-100 text-blue-700 py-2 rounded text-xs font-medium" data-size="4">
+                    X-Large (200×100)
+                </button>
+            </div>
+
             <!-- Action Buttons -->
-            <div class="flex flex-wrap gap-4 justify-center">
-                <button id="convertBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 transform hover:scale-105">
-                    Convert to ASCII
+            <div class="flex flex-col sm:flex-row gap-2 md:gap-4 justify-center">
+                <button id="convertBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-semibold text-sm md:text-base transition duration-200 flex-1">
+                    🎨 Create ASCII Art
                 </button>
-                <button id="downloadBtn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 transform hover:scale-105">
-                    Download ASCII Art
+                <button id="downloadTextBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-semibold text-sm md:text-base transition duration-200 flex-1">
+                    📥 Download Text
                 </button>
-                <button id="copyBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 transform hover:scale-105">
-                    Copy to Clipboard
+                <button id="downloadImageBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-lg font-semibold text-sm md:text-base transition duration-200 flex-1">
+                    🖼️ Download Image
                 </button>
             </div>
         </div>
 
-        <!-- Preview Section -->
-        <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Original Image -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Original Image</h3>
-                <div id="imagePreview" class="border-2 border-dashed border-gray-300 rounded-lg p-4 min-h-64 flex items-center justify-center">
-                    <p class="text-gray-500 text-center">Your image will appear here</p>
+        <!-- ASCII Art Output -->
+        <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-4 md:p-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2 sm:mb-0">ASCII Art Result</h3>
+                <div class="flex items-center space-x-4">
+                    <div class="text-xs text-gray-600" id="artworkInfo">Size: 0×0 characters</div>
+                    <button id="copyBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm transition duration-200">
+                        📋 Copy Text
+                    </button>
                 </div>
             </div>
+            
+            <!-- ASCII Output Container -->
+            <div class="border-2 border-gray-300 rounded-lg bg-gray-900 ascii-container">
+                <pre id="asciiOutput" class="fixed-ascii text-green-400 p-4 md:p-6 min-h-64"></pre>
+            </div>
+            
+            <!-- Scroll Instructions -->
+            <div class="mt-3 flex items-center justify-center text-xs text-gray-600 bg-yellow-50 p-2 rounded">
+                <span class="mr-2">↔️</span>
+                Scroll horizontally to view the complete artwork
+                <span class="ml-2">↔️</span>
+            </div>
+        </div>
 
-            <!-- ASCII Art Output -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">ASCII Art Result</h3>
-                <div class="border-2 border-gray-200 rounded-lg p-4 bg-gray-900">
-                    <pre id="asciiOutput" class="ascii-output text-green-400 text-xs overflow-auto max-h-96 min-h-64 whitespace-pre"></pre>
-                </div>
+        <!-- Features Section -->
+        <div class="max-w-6xl mx-auto mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            <div class="bg-white p-4 rounded-lg shadow text-center">
+                <div class="text-2xl mb-2">🔍</div>
+                <h4 class="font-semibold mb-2">Fixed Character Size</h4>
+                <p class="text-sm text-gray-600">Characters never shrink. Always readable on all devices.</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow text-center">
+                <div class="text-2xl mb-2">📱</div>
+                <h4 class="font-semibold mb-2">Mobile Friendly</h4>
+                <p class="text-sm text-gray-600">Scroll to view large artworks. Perfect touch experience.</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow text-center">
+                <div class="text-2xl mb-2">🎯</div>
+                <h4 class="font-semibold mb-2">High Quality</h4>
+                <p class="text-sm text-gray-600">Preserves image details with optimal character mapping.</p>
             </div>
         </div>
     </main>
 
-    <!-- How It Works Section -->
-    <section class="bg-gray-100 py-12 mt-12">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">How It Works</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <div class="text-center">
-                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">📤</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">1. Upload Image</h3>
-                    <p class="text-gray-600">Select any image from your device or drag and drop it</p>
-                </div>
-                <div class="text-center">
-                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">⚙️</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">2. Customize Settings</h3>
-                    <p class="text-gray-600">Adjust width, character set, and other parameters</p>
-                </div>
-                <div class="text-center">
-                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">📥</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">3. Download & Share</h3>
-                    <p class="text-gray-600">Save your ASCII art or copy to clipboard</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
+    <footer class="bg-gray-800 text-white py-6 md:py-8 mt-8">
         <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2024 Image to ASCII Art Converter. All rights reserved.</p>
-            <p class="mt-2 text-gray-400">Free online tool for creating text-based art from images</p>
+            <p class="text-sm md:text-base">&copy; 2024 Fixed Size ASCII Art Converter</p>
+            <p class="mt-2 text-gray-400 text-xs md:text-sm">Perfect ASCII art experience on all devices</p>
         </div>
     </footer>
 
@@ -181,14 +248,19 @@
         const fileInput = document.getElementById('fileInput');
         const dropZone = document.getElementById('dropZone');
         const convertBtn = document.getElementById('convertBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
+        const downloadTextBtn = document.getElementById('downloadTextBtn');
+        const downloadImageBtn = document.getElementById('downloadImageBtn');
         const copyBtn = document.getElementById('copyBtn');
         const asciiOutput = document.getElementById('asciiOutput');
-        const imagePreview = document.getElementById('imagePreview');
-        const widthSlider = document.getElementById('widthSlider');
-        const widthValue = document.getElementById('widthValue');
+        const sizeSlider = document.getElementById('sizeSlider');
+        const sizeLabel = document.getElementById('sizeLabel');
         const charSet = document.getElementById('charSet');
+        const charSizeSlider = document.getElementById('charSizeSlider');
+        const charSizeValue = document.getElementById('charSizeValue');
         const invertColors = document.getElementById('invertColors');
+        const enhanceDetails = document.getElementById('enhanceDetails');
+        const artworkInfo = document.getElementById('artworkInfo');
+        const presetButtons = document.querySelectorAll('.preset-btn');
 
         let currentImage = null;
 
@@ -197,18 +269,31 @@
             standard: '@#S%?*+;:,,`. ',
             blocks: '█▓▒░ ',
             simple: '01',
-            detailed: '@%#*+=-:. '
+            detailed: '@%#*+=-:. ',
+            art: '♠♥♦♣•○●□■▪▫→←↑↓↔©®™§¶ ',
+            bold: '▓▒░▄▀■□▪▫'
+        };
+
+        // Size Presets
+        const sizePresets = {
+            1: { width: 80, height: 40, label: 'Small' },
+            2: { width: 120, height: 60, label: 'Medium' },
+            3: { width: 160, height: 80, label: 'Large' },
+            4: { width: 200, height: 100, label: 'X-Large' }
         };
 
         // Event Listeners
         dropZone.addEventListener('click', () => fileInput.click());
+        
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
             dropZone.classList.add('dragover');
         });
+        
         dropZone.addEventListener('dragleave', () => {
             dropZone.classList.remove('dragover');
         });
+        
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
             dropZone.classList.remove('dragover');
@@ -224,13 +309,26 @@
             }
         });
 
-        widthSlider.addEventListener('input', (e) => {
-            widthValue.textContent = e.target.value;
-        });
+        sizeSlider.addEventListener('input', updateSizeLabel);
+        charSizeSlider.addEventListener('input', updateCharSize);
 
         convertBtn.addEventListener('click', convertToAscii);
-        downloadBtn.addEventListener('click', downloadAscii);
+        downloadTextBtn.addEventListener('click', downloadAsciiText);
+        downloadImageBtn.addEventListener('click', downloadAsciiImage);
         copyBtn.addEventListener('click', copyToClipboard);
+
+        // Preset buttons
+        presetButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const size = parseInt(btn.dataset.size);
+                sizeSlider.value = size;
+                updateSizeLabel();
+                updatePresetButtons();
+                if (currentImage) {
+                    convertToAscii();
+                }
+            });
+        });
 
         // Functions
         function handleImageUpload(file) {
@@ -243,38 +341,69 @@
             reader.onload = (e) => {
                 currentImage = new Image();
                 currentImage.onload = () => {
-                    // Display image preview
-                    imagePreview.innerHTML = '';
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'max-w-full max-h-64 rounded';
-                    imagePreview.appendChild(img);
+                    convertToAscii();
                 };
                 currentImage.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
 
+        function updateSizeLabel() {
+            const sizeValue = parseInt(sizeSlider.value);
+            const preset = sizePresets[sizeValue];
+            sizeLabel.textContent = preset.label;
+        }
+
+        function updateCharSize() {
+            const size = charSizeSlider.value;
+            charSizeValue.textContent = size + 'px';
+            asciiOutput.style.fontSize = size + 'px';
+        }
+
+        function updatePresetButtons() {
+            const currentSize = parseInt(sizeSlider.value);
+            presetButtons.forEach(btn => {
+                const btnSize = parseInt(btn.dataset.size);
+                if (btnSize === currentSize) {
+                    btn.classList.remove('bg-blue-100', 'text-blue-700');
+                    btn.classList.add('bg-blue-600', 'text-white');
+                } else {
+                    btn.classList.remove('bg-blue-600', 'text-white');
+                    btn.classList.add('bg-blue-100', 'text-blue-700');
+                }
+            });
+        }
+
         function convertToAscii() {
             if (!currentImage) {
-                alert('Please select an image first.');
+                asciiOutput.textContent = 'Please upload an image first';
                 return;
             }
 
-            const width = parseInt(widthSlider.value);
+            const sizeValue = parseInt(sizeSlider.value);
+            const preset = sizePresets[sizeValue];
+            const width = preset.width;
+            const height = preset.height;
             const selectedChars = charSets[charSet.value];
             const invert = invertColors.checked;
+            const enhance = enhanceDetails.checked;
 
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
 
-            // Calculate height maintaining aspect ratio
-            const height = Math.floor((currentImage.height / currentImage.width) * width * 0.5);
-            
             canvas.width = width;
             canvas.height = height;
 
+            // Draw image on canvas
             ctx.drawImage(currentImage, 0, 0, width, height);
+            
+            // Apply contrast enhancement if needed
+            if (enhance) {
+                const imageData = ctx.getImageData(0, 0, width, height);
+                enhanceContrast(imageData);
+                ctx.putImageData(imageData, 0, 0);
+            }
+
             const imageData = ctx.getImageData(0, 0, width, height);
 
             let asciiArt = '';
@@ -285,8 +414,8 @@
                     const g = imageData.data[index + 1];
                     const b = imageData.data[index + 2];
                     
-                    // Calculate brightness
-                    let brightness = (r + g + b) / 3;
+                    // Calculate brightness with different weights for RGB
+                    let brightness = (r * 0.299 + g * 0.587 + b * 0.114);
                     if (invert) brightness = 255 - brightness;
                     
                     // Map brightness to character
@@ -297,11 +426,39 @@
             }
 
             asciiOutput.textContent = asciiArt;
+            artworkInfo.textContent = `Size: ${width}×${height} characters | ${asciiArt.length} chars`;
+            
+            // Update character size
+            updateCharSize();
         }
 
-        function downloadAscii() {
+        function enhanceContrast(imageData) {
+            const data = imageData.data;
+            let min = 255, max = 0;
+            
+            // Find min and max brightness
+            for (let i = 0; i < data.length; i += 4) {
+                const brightness = data[i] * 0.299 + data[i+1] * 0.587 + data[i+2] * 0.114;
+                if (brightness < min) min = brightness;
+                if (brightness > max) max = brightness;
+            }
+            
+            // Apply contrast stretch
+            const range = max - min || 1;
+            for (let i = 0; i < data.length; i += 4) {
+                const brightness = data[i] * 0.299 + data[i+1] * 0.587 + data[i+2] * 0.114;
+                const newBrightness = ((brightness - min) / range) * 255;
+                
+                const ratio = newBrightness / brightness;
+                data[i] = Math.min(255, data[i] * ratio);
+                data[i+1] = Math.min(255, data[i+1] * ratio);
+                data[i+2] = Math.min(255, data[i+2] * ratio);
+            }
+        }
+
+        function downloadAsciiText() {
             const asciiText = asciiOutput.textContent;
-            if (!asciiText) {
+            if (!asciiText || asciiText === 'Please upload an image first') {
                 alert('No ASCII art to download. Please convert an image first.');
                 return;
             }
@@ -317,19 +474,86 @@
             URL.revokeObjectURL(url);
         }
 
+        function downloadAsciiImage() {
+            const asciiElement = document.getElementById('asciiOutput');
+            if (!asciiElement.textContent || asciiElement.textContent === 'Please upload an image first') {
+                alert('No ASCII art to download. Please convert an image first.');
+                return;
+            }
+
+            html2canvas(asciiElement.parentElement).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'ascii-art.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
         function copyToClipboard() {
             const asciiText = asciiOutput.textContent;
-            if (!asciiText) {
+            if (!asciiText || asciiText === 'Please upload an image first') {
                 alert('No ASCII art to copy. Please convert an image first.');
                 return;
             }
 
             navigator.clipboard.writeText(asciiText).then(() => {
-                alert('ASCII art copied to clipboard!');
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = '✅ Copied!';
+                copyBtn.classList.remove('bg-indigo-600');
+                copyBtn.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.classList.remove('bg-green-600');
+                    copyBtn.classList.add('bg-indigo-600');
+                }, 2000);
             }).catch(err => {
                 alert('Failed to copy: ' + err);
             });
         }
+
+        // Initialize
+        updateSizeLabel();
+        updateCharSize();
+        updatePresetButtons();
+        
+        // Auto-convert on settings change
+        [sizeSlider, charSet, charSizeSlider, invertColors, enhanceDetails].forEach(element => {
+            element.addEventListener('change', convertToAscii);
+        });
+
+        // Load sample image on startup for demo
+        setTimeout(() => {
+            if (!currentImage) {
+                // Create a simple demo image
+                const canvas = document.createElement('canvas');
+                canvas.width = 200;
+                canvas.height = 200;
+                const ctx = canvas.getContext('2d');
+                
+                // Draw a simple smiley face
+                ctx.fillStyle = '#ffd900';
+                ctx.beginPath();
+                ctx.arc(100, 100, 80, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = '#333';
+                ctx.beginPath();
+                ctx.arc(70, 70, 12, 0, Math.PI * 2);
+                ctx.arc(130, 70, 12, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 8;
+                ctx.beginPath();
+                ctx.arc(100, 110, 40, 0.1, Math.PI - 0.1);
+                ctx.stroke();
+                
+                currentImage = new Image();
+                currentImage.src = canvas.toDataURL();
+                currentImage.onload = convertToAscii;
+            }
+        }, 1000);
     </script>
 </body>
 </html>
