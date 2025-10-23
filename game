@@ -1,1 +1,1786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subway Surfers - Play Online | GamePlay Jonno</title>
+    <meta name="description" content="Run as fast as you can through the subway tracks, dodge oncoming trains, collect coins, and unlock amazing characters and hoverboards in this classic endless runner game.">
+    <meta name="keywords" content="subway surfers, endless runner, arcade, action, 3D, adventure, html5 game">
+    <meta name="author" content="SYBO Games">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Subway Surfers - Classic Endless Runner Game">
+    <meta property="og:description" content="Run as fast as you can through the subway tracks, dodge oncoming trains, collect coins, and unlock amazing characters">
+    <meta property="og:image" content="https://www.talkesport.com/wp-content/uploads/Subway-surfers-characters.jpg">
+    <meta property="og:url" content="https://gameplayjonno.com/games/subway-surfers">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Subway Surfers - Classic Endless Runner Game">
+    <meta name="twitter:description" content="Run as fast as you can through the subway tracks, dodge oncoming trains, collect coins">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://gameplayjonno.com/games/subway-surfers">
+    
+    <!-- Bootstrap 5.3.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Alpine.js for reactive state management -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        :root {
+            --primary: #ff6b9d;
+            --primary-dark: #e05587;
+            --secondary: #9d4edd;
+            --dark-bg: #0f172a;
+            --darker-bg: #0a0f1c;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --accent: #ffd166;
+            --game-blue: #4a9fff;
+            --game-yellow: #ffd166;
+            --game-green: #06d6a0;
+            --primary-color: #6C63FF;
+            --text-white: #ffffff;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-top: 80px; /* Account for fixed navbar */
+        }
+        
+        /* Top Navigation Bar */
+        .navbar-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1030;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(108, 99, 255, 0.3);
+            padding: 0.5rem 0;
+        }
+        
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .navbar-center {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 2rem;
+        }
+        
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-white);
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sidebar-toggle:hover {
+            background: rgba(108, 99, 255, 0.1);
+        }
+        
+        /* Logo */
+        .navbar-logo {
+            width: 180px;
+            height: auto;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(108, 99, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            color: var(--text-white);
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+        
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-top: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(108, 99, 255, 0.3);
+            overflow: hidden;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .search-results.active {
+            display: block;
+        }
+        
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .search-result-item:hover {
+            background: rgba(108, 99, 255, 0.1);
+        }
+        
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .search-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Mobile Search */
+        .mobile-search-container {
+            display: none;
+            padding: 1rem;
+            background: var(--dark-bg);
+            border-bottom: 2px solid rgba(108, 99, 255, 0.3);
+        }
+        
+        .mobile-search-container.active {
+            display: block;
+        }
+        
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            background: var(--card-bg);
+            border-right: 2px solid rgba(108, 99, 255, 0.3);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1020;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        
+        .sidebar.active {
+            transform: translateX(0);
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .sidebar-logo {
+            width: 150px;
+        }
+        
+        .sidebar-close {
+            background: transparent;
+            border: none;
+            color: var(--text-white);
+            font-size: 1.25rem;
+        }
+        
+        .sidebar-content {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            background: rgba(108, 99, 255, 0.1);
+            color: var(--text-white);
+        }
+        
+        .sidebar-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(108, 99, 255, 0.1);
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+        
+        .sidebar-text {
+            font-weight: 500;
+        }
+        
+        .sidebar-category-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        /* Custom Scrollbar for Sidebar */
+        .sidebar-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .sidebar-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        .sidebar-content::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        /* Overlay for sidebar on mobile */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1010;
+            display: none;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+        
+        /* Responsive */
+        @media (max-width: 991.98px) {
+            .navbar-center {
+                display: none;
+            }
+            
+            .mobile-search-toggle {
+                display: block !important;
+            }
+        }
+        
+        @media (min-width: 992px) {
+            .sidebar {
+                transform: translateX(0);
+            }
+            
+            body {
+                padding-left: 280px;
+            }
+            
+            .sidebar-toggle {
+                display: none;
+            }
+            
+            .sidebar-overlay {
+                display: none !important;
+            }
+        }
 
+        /* Rest of your existing CSS styles */
+        .game-container {
+            background: var(--card-bg);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .game-preview {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(10px);
+        }
+        
+        .game-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.7) 0%, rgba(255, 107, 157, 0.7) 100%);
+            z-index: 1;
+        }
+        
+        .preview-content {
+            position: relative;
+            z-index: 2;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 500px;
+            text-align: center;
+        }
+        
+        .game-thumbnail {
+            width: 220px;
+            height: 165px;
+            object-fit: cover;
+            border-radius: 1.5rem;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+            border: 3px solid var(--accent);
+        }
+        
+        .game-preview:hover .game-thumbnail {
+            transform: scale(1.08) rotate(2deg);
+        }
+        
+        .game-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 20px rgba(255, 107, 157, 0.7);
+            color: white;
+            background: linear-gradient(45deg, #ff6b9d, #ffd166);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .game-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+        
+        .btn-3d {
+            background: linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 35px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 0 var(--primary-dark),
+                        0 15px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-3d:hover {
+            transform: translateY(5px);
+            box-shadow: 0 5px 0 var(--primary-dark),
+                        0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-3d:active {
+            transform: translateY(8px);
+            box-shadow: 0 2px 0 var(--primary-dark),
+                        0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-3d:hover::before {
+            left: 100%;
+        }
+        
+        .btn-outline-3d {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-outline-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 157, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-outline-3d:hover::before {
+            left: 100%;
+        }
+        
+        .btn-outline-3d:hover {
+            background: rgba(255, 107, 157, 0.1);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .game-wrapper {
+            background: var(--darker-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 2px solid rgba(157, 78, 221, 0.3);
+        }
+        
+        .game-control-bar {
+            background: rgba(15, 23, 42, 0.95);
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            border-radius: 1rem;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .play-time-display {
+            background: rgba(255, 107, 157, 0.2);
+            border: 2px solid rgba(255, 107, 157, 0.5);
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-control-3d {
+            background: linear-gradient(145deg, #2d3748, #4a5568);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #2d3748,
+                        0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-control-3d:hover {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #2d3748,
+                        0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Game Info Cards */
+        .game-info-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid rgba(157, 78, 221, 0.3);
+            border-radius: 1.5rem;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+        
+        .game-info-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .info-grid {
+            display: grid;
+            gap: 25px;
+        }
+        
+        .info-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 107, 157, 0.2);
+            border-radius: 1rem;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .info-section:hover {
+            border-color: rgba(255, 107, 157, 0.5);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.2);
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary);
+            border-bottom: 2px solid rgba(255, 107, 157, 0.3);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .category-badge {
+            background: linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+            padding: 8px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 0 var(--primary-dark);
+        }
+        
+        .category-badge:hover {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 var(--primary-dark);
+            color: white;
+        }
+        
+        .tag-badge {
+            background: rgba(157, 78, 221, 0.2);
+            color: var(--text-secondary);
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            transition: all 0.3s ease;
+            padding: 6px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.85rem;
+            margin: 3px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tag-badge:hover {
+            background: rgba(157, 78, 221, 0.4);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(157, 78, 221, 0.3);
+        }
+        
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        
+        /* Rating System */
+        .rating-system {
+            background: rgba(30, 41, 59, 0.9);
+            border: 2px solid rgba(255, 214, 102, 0.3);
+            border-radius: 1.5rem;
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .rating-stars {
+            color: var(--accent);
+            font-size: 2rem;
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .rating-star {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(255, 214, 102, 0.5);
+        }
+        
+        .rating-star:hover {
+            transform: scale(1.3) rotate(15deg);
+        }
+        
+        /* Social Share Bar */
+        .social-share-bar {
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid rgba(255, 107, 157, 0.3);
+            border-radius: 1rem;
+            padding: 15px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .social-share-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-share-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .social-share-btn:hover::before {
+            left: 100%;
+        }
+        
+        .social-share-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .facebook { background: linear-gradient(145deg, #3b5998, #2d4373); }
+        .twitter { background: linear-gradient(145deg, #1da1f2, #0d8bd9); }
+        .discord { background: linear-gradient(145deg, #5865f2, #4752c4); }
+        .youtube { background: linear-gradient(145deg, #ff0000, #cc0000); }
+        .tiktok { background: linear-gradient(145deg, #000000, #333333); }
+        .share { background: linear-gradient(145deg, var(--primary), var(--primary-dark)); }
+        
+        /* Download Items */
+        .download-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(157, 78, 221, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .download-item:hover {
+            background: rgba(157, 78, 221, 0.1);
+            border-color: rgba(157, 78, 221, 0.5);
+            transform: translateX(5px);
+        }
+        
+        /* Comment Cards */
+        .comment-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 107, 157, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .comment-card:hover {
+            border-color: rgba(255, 107, 157, 0.5);
+            transform: translateY(-3px);
+        }
+        
+        /* Devlog Items */
+        .devlog-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(157, 78, 221, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .devlog-item:hover {
+            border-color: rgba(157, 78, 221, 0.5);
+            transform: translateX(5px);
+        }
+        
+        /* Theater Mode */
+        .theater-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .theater-mode .game-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            border: none;
+        }
+        
+        .theater-mode .ratio-16x9 {
+            height: 85vh;
+        }
+        
+        /* Responsive layouts */
+        /* Mobile - 1 column */
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2rem;
+            }
+            
+            .game-thumbnail {
+                width: 180px;
+                height: 135px;
+            }
+            
+            .btn-3d {
+                padding: 12px 25px;
+                font-size: 1.1rem;
+            }
+            
+            .preview-content {
+                min-height: 400px;
+                padding: 2rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-control-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+        
+        /* Tablet/Laptop - 2 columns */
+        @media (min-width: 769px) and (max-width: 1199px) {
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Desktop - 3 columns */
+        @media (min-width: 1200px) {
+            .info-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* Animation for preview */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .preview-content > * {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        .game-thumbnail {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+        
+        .game-title {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+        
+        .game-description {
+            animation-delay: 0.6s;
+            opacity: 0;
+        }
+        
+        .btn-3d {
+            animation-delay: 0.8s;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body x-data="app()">
+    <!-- Top Navigation Bar -->
+    <nav class="navbar-fixed">
+        <div class="container-fluid">
+            <div class="navbar-container">
+                <!-- Left Section -->
+                <div class="navbar-left">
+                    <button class="sidebar-toggle" @click="toggleSidebar()" aria-label="Toggle sidebar">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11 17L6 12L11 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M18 17L13 12L18 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <a href="/" class="navbar-brand">
+                        <img src="https://via.placeholder.com/180x50/6C63FF/FFFFFF?text=GamePlay+Jonno" alt="GamePlay Jonno" class="navbar-logo">
+                    </a>
+                </div>
+                
+                <!-- Center Section (Desktop Only) -->
+                <div class="navbar-center d-none d-lg-block">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="Search games..." 
+                            x-model="searchQuery"
+                            @input.debounce.300ms="performSearch()"
+                            @focus="showResults = true"
+                            autocomplete="off"
+                        >
+                        <div class="search-results" :class="{ 'active': showResults && searchResults.length > 0 }">
+                            <template x-for="result in searchResults" :key="result.id">
+                                <div class="search-result-item" @click="selectSearchResult(result)">
+                                    <div class="d-flex align-items-center">
+                                        <img :src="result.thumbnail" :alt="result.title" class="me-3" style="width: 40px; height: 40px; border-radius: 8px;">
+                                        <div>
+                                            <div x-text="result.title" class="fw-bold"></div>
+                                            <div x-text="result.category" class="text-muted small"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                            <div class="search-loading" x-show="searchLoading">
+                                <i class="fas fa-spinner fa-spin me-2"></i> Searching...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Section -->
+                <div class="navbar-right">
+                    <!-- Mobile Search Toggle -->
+                    <button class="btn btn-link text-white d-lg-none mobile-search-toggle" @click="toggleMobileSearch()" aria-label="Toggle search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Search Bar -->
+            <div class="mobile-search-container" :class="{ 'active': mobileSearchOpen }">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        placeholder="Search games..." 
+                        x-model="searchQuery"
+                        @input.debounce.300ms="performSearch()"
+                        @focus="showResults = true"
+                        autocomplete="off"
+                    >
+                    <div class="search-results" :class="{ 'active': showResults && searchResults.length > 0 }">
+                        <template x-for="result in searchResults" :key="result.id">
+                            <div class="search-result-item" @click="selectSearchResult(result)">
+                                <div class="d-flex align-items-center">
+                                    <img :src="result.thumbnail" :alt="result.title" class="me-3" style="width: 40px; height: 40px; border-radius: 8px;">
+                                    <div>
+                                        <div x-text="result.title" class="fw-bold"></div>
+                                        <div x-text="result.category" class="text-muted small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="search-loading" x-show="searchLoading">
+                            <i class="fas fa-spinner fa-spin me-2"></i> Searching...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Sidebar Overlay (Mobile Only) -->
+    <div class="sidebar-overlay" :class="{ 'active': sidebarOpen }" @click="closeSidebar()"></div>
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" :class="{ 'active': sidebarOpen }" id="sidebar">
+        <div class="sidebar-header">
+            <a href="/" class="navbar-brand">
+                <img src="https://e7.pngegg.com/pngimages/558/935/png-clipart-html-games-5-logo-html5-games-icons-logos-emojis-tech-companies.png" alt="GamePlay" class="sidebar-logo">
+            </a>
+            <button class="sidebar-close d-lg-none" @click="closeSidebar()" aria-label="Close sidebar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="sidebar-content">
+            <ul class="sidebar-nav">
+                <!-- Home Link -->
+                <li class="sidebar-item">
+                    <a href="/" class="sidebar-link active">
+                        <span class="sidebar-icon">
+                            <i class="fas fa-home"></i>
+                        </span>
+                        <span class="sidebar-text">Home</span>
+                    </a>
+                </li>
+                
+                <!-- Dynamic Category Links -->
+                <li class="sidebar-item" x-data="{ categories: [
+                    { id: 1, name: 'Car', icon: 'https://img.freepik.com/premium-vector/trendy-flat-icon-racing-car_67813-6302.jpg?w=360' },
+                    { id: 2, name: 'Football', icon: 'https://cdn2.iconfinder.com/data/icons/iconslandsport/PNG/256x256/Soccer_Ball.png' },
+                    { id: 3, name: 'Baseball', icon: 'https://cdn-icons-png.freepik.com/256/4847/4847801.png?semt=ais_white_label' },
+                    { id: 4, name: 'Action', icon: 'https://png.pngitem.com/pimgs/s/46-461067_swords-crossed-workout-icon-png-free-transparent-png.png' },
+                    { id: 5, name: 'Adventure', icon: 'https://cdn.dribbble.com/userupload/43804089/file/original-19c155c354de288ffae3aad7604c69fa.png?resize=752x&vertical=center' }
+                ] }">
+                    <template x-for="category in categories" :key="category.id">
+                        <a href="#" class="sidebar-link mb-2">
+                            <img :src="category.icon" :alt="category.name" class="sidebar-category-icon">
+                            <span class="sidebar-text" x-text="category.name"></span>
+                        </a>
+                    </template>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-primary">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-primary">Endless Runner</a></li>
+                <li class="breadcrumb-item active text-white">Subway Surfers</li>
+            </ol>
+        </nav>
+        
+                    <!-- Game Preview Section -->
+                    <div class="game-preview" id="gamePreview" 
+                         style="background-image: url('https://www.talkesport.com/wp-content/uploads/Subway-surfers-characters.jpg')">
+                        <div class="preview-content">
+                            <img src="https://www.talkesport.com/wp-content/uploads/Subway-surfers-characters.jpg" 
+                                 alt="Subway Surfers" class="game-thumbnail">
+                            <h1 class="game-title" id="gameTitle">Subway Surfers</h1>
+                            <p class="game-description" id="gameDescription">
+                                Run as fast as you can through the subway tracks, dodge oncoming trains, collect coins, and unlock amazing characters and hoverboards in this classic endless runner game.
+                            </p>
+                            <button class="btn-3d" onclick="loadGame()">
+                                <i class="fas fa-play"></i> Play Now
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Game iFrame Section -->
+                    <div class="game-wrapper d-none" id="gameWrapper">
+                        <div class="ratio ratio-16x9">
+                            <iframe id="gameFrame" 
+                                    data-src="https://subwaysurfersonline.io/subway-surfers.play"
+                                    frameborder="0" 
+                                    allowfullscreen
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                            </iframe>
+                        </div>
+                        
+                        <!-- Control Bar Section -->
+                        <div class="game-control-bar">
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <button class="btn-outline-3d" onclick="reloadGame()">
+                                    <i class="fas fa-redo"></i>
+                                    <span>Restart</span>
+                                </button>
+                                <button class="btn-outline-3d" id="favoriteBtn">
+                                    <i class="far fa-heart"></i>
+                                    <span>Favorite</span>
+                                </button>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <!-- Play Time Display -->
+                                <div class="play-time-display d-none" id="playTimeDisplay">
+                                    <i class="fas fa-clock text-primary"></i>
+                                    <span id="playTime">00:00</span>
+                                </div>
+                                <!-- Theater & Fullscreen Buttons -->
+                                <div class="d-flex gap-2 screen-controls d-none" id="screenControls">
+                                    <button class="btn-control-3d" onclick="toggleTheaterMode()" title="Theater Mode">
+                                        <i class="fas fa-theater-masks"></i>
+                                    </button>
+                                    <button class="btn-control-3d" onclick="toggleFullscreen()" title="Fullscreen">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Rating System -->
+                <div class="rating-system">
+                    <h3 class="section-title">
+                        <i class="fas fa-star"></i> Rate This Game
+                    </h3>
+                    
+                    <div class="text-center mb-4">
+                        <p class="text-light mb-3">How would you rate Subway Surfers?</p>
+                        <div class="rating-stars justify-content-center" id="ratingStars">
+                            <i class="far fa-star rating-star" data-rating="1"></i>
+                            <i class="far fa-star rating-star" data-rating="2"></i>
+                            <i class="far fa-star rating-star" data-rating="3"></i>
+                            <i class="far fa-star rating-star" data-rating="4"></i>
+                            <i class="far fa-star rating-star" data-rating="5"></i>
+                        </div>
+                        <div class="text-muted mt-2">Click on a star to rate</div>
+                    </div>
+                    
+                    <div class="alert alert-success d-none text-center" id="ratingMessage">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <span id="messageText">Thank you for your rating!</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <div class="text-light">
+                            <span class="fw-bold text-accent" id="averageRating">4.7</span> average • 
+                            <span id="totalRatings">1,289,476</span> ratings
+                        </div>
+                        <button class="btn-outline-3d btn-sm" onclick="resetRating()">
+                            <i class="fas fa-undo"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+
+                        <!-- Social Share Bar -->
+        <div class="social-share-bar">
+            <div class="d-flex gap-3 flex-wrap justify-content-center">
+                <span class="text-white fw-bold align-self-center">Share this game:</span>
+                <a href="#" class="social-share-btn facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-share-btn twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-share-btn discord"><i class="fab fa-discord"></i></a>
+                <a href="#" class="social-share-btn youtube"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="social-share-btn tiktok"><i class="fab fa-tiktok"></i></a>
+                <button class="social-share-btn share" onclick="shareGame()"><i class="fas fa-share-alt"></i></button>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="game-container">
+                
+                <!-- Game Information Grid -->
+                <div class="info-grid mt-4" id="gameInfoGrid">
+                    <!-- Game Info Card -->
+                    <div class="game-info-card data-loading" style="animation-delay: 0.1s">
+                        <h3 class="section-title">
+                            <i class="fas fa-info-circle"></i> Game Info
+                        </h3>
+                         
+                        <div class="sidebar-card-body">
+                            <div class="info-item mb-3">
+                                <div class="info-label text-uppercase mb-2 d-flex align-items-center">
+                                    <i class="fas fa-folder me-2"></i>
+                                    <span>Category</span>
+                                </div>
+                                <a href="#" class="category-badge">
+                                    <span>Endless Runner</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                            <div class="info-item mb-3">
+                                <div class="info-label text-uppercase mb-2 d-flex align-items-center">
+                                    <i class="fas fa-tags me-2"></i>
+                                    <span>Tags</span>
+                                </div>
+                                <div class="d-flex flex-wrap" id="gameTags">
+                                    <a href="#" class="tag-badge">Running</a>
+                                    <a href="#" class="tag-badge">Action</a>
+                                    <a href="#" class="tag-badge">3D</a>
+                                    <a href="#" class="tag-badge">Adventure</a>
+                                    <a href="#" class="tag-badge">Subway</a>
+                                    <a href="#" class="tag-badge">Reflex</a>
+                                    <a href="#" class="tag-badge">Casual</a>
+                                    <a href="#" class="tag-badge">High Score</a>
+                                </div>
+                            </div>
+                            <div class="info-item mb-0">
+                                <div class="info-label text-uppercase mb-2 d-flex align-items-center">
+                                    <i class="fas fa-clock me-2"></i>
+                                    <span>Updated</span>
+                                </div>
+                                <div class="text-white" id="updatedDate">October 20, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Developer Info -->
+                    <div class="game-info-card data-loading" style="animation-delay: 0.2s">
+                        <h3 class="section-title">
+                            <i class="fas fa-users"></i> Development Team
+                        </h3>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="info-label">TEAM NAME</div>
+                                <div class="text-white fw-bold" id="teamName">SYBO Games</div>
+                            </div>
+                            <div>
+                                <div class="info-label">CREATED BY</div>
+                                <div class="text-white" id="createdBy">SYBO, Kiloo</div>
+                            </div>
+                            <div>
+                                <div class="info-label">PROGRAMMED BY</div>
+                                <div class="text-white" id="programmedBy">SYBO Games Team</div>
+                            </div>
+                            <div>
+                                <div class="info-label">ART BY</div>
+                                <div class="text-white" id="artBy">SYBO Games Art Department</div>
+                            </div>
+                            <div>
+                                <div class="info-label">MUSIC CREDITS</div>
+                                <div class="text-white" id="musicCredits">Subway Surfers Official Soundtrack, SYBO Music Studio</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Game Details -->
+                    <div class="game-info-card data-loading" style="animation-delay: 0.3s">
+                        <h3 class="section-title">
+                            <i class="fas fa-gamepad"></i> Game Details
+                        </h3>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="info-label">STATUS</div>
+                                <div class="text-white" id="gameStatus">Released</div>
+                            </div>
+                            <div>
+                                <div class="info-label">MADE WITH</div>
+                                <div class="text-white" id="madeWith">Unity</div>
+                            </div>
+                            <div>
+                                <div class="info-label">AVERAGE SESSION</div>
+                                <div class="text-white" id="averageSession">A few minutes per run</div>
+                            </div>
+                            <div>
+                                <div class="info-label">FEATURED ON</div>
+                                <div class="text-white" id="featuredOn">Google Play, App Store, Unity Showcase, IGN Mobile Games</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Info Sections -->
+                <div class="info-grid mt-4">
+                    <!-- Platforms & Inputs -->
+                    <div class="info-section data-loading" style="animation-delay: 0.4s">
+                        <div class="section-title">
+                            <i class="fas fa-desktop"></i> Platforms & Inputs
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="fw-semibold mb-2 text-primary">Platforms</h5>
+                            <div class="d-flex flex-wrap gap-2" id="platforms">
+                                <span class="tag-badge">HTML5</span>
+                                <span class="tag-badge">Android</span>
+                                <span class="tag-badge">iOS</span>
+                                <span class="tag-badge">Windows</span>
+                                <span class="tag-badge">macOS</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="fw-semibold mb-2 text-primary">Inputs</h5>
+                            <div class="d-flex flex-wrap gap-2" id="inputs">
+                                <span class="tag-badge">Keyboard</span>
+                                <span class="tag-badge">Mouse</span>
+                                <span class="tag-badge">Touchscreen</span>
+                                <span class="tag-badge">Controller</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Languages & Accessibility -->
+                    <div class="info-section data-loading" style="animation-delay: 0.5s">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i> Languages & Accessibility
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="fw-semibold mb-2 text-primary">Languages</h5>
+                            <div class="text-light" id="languages">
+                                <div>English</div>
+                                <div>Spanish</div>
+                                <div>French</div>
+                                <div>German</div>
+                                <div>Portuguese</div>
+                                <div>Hindi</div>
+                                <div>Chinese</div>
+                                <div>Japanese</div>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="fw-semibold mb-2 text-primary">Accessibility</h5>
+                            <div class="d-flex flex-wrap gap-2" id="accessibility">
+                                <span class="tag-badge">Color-blind friendly</span>
+                                <span class="tag-badge">One button mode</span>
+                                <span class="tag-badge">Touch controls</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Downloads Section -->
+                    <div class="info-section data-loading" style="animation-delay: 0.6s">
+                        <div class="section-title">
+                            <i class="fas fa-download"></i> Downloads
+                        </div>
+                        
+                        <div class="space-y-3" id="downloadsList">
+                            <div class="download-item">
+                                <div class="flex-grow-1">
+                                    <div class="fw-medium">Subway Surfers (Android)</div>
+                                    <div class="text-muted small">180 MB</div>
+                                </div>
+                                <button class="btn-outline-3d btn-sm">Download</button>
+                            </div>
+                            
+                            <div class="download-item">
+                                <div class="flex-grow-1">
+                                    <div class="fw-medium">Subway Surfers (iOS)</div>
+                                    <div class="text-muted small">200 MB</div>
+                                </div>
+                                <button class="btn-outline-3d btn-sm">Download</button>
+                            </div>
+                            
+                            <div class="download-item">
+                                <div class="flex-grow-1">
+                                    <div class="fw-medium">Subway Surfers (Windows)</div>
+                                    <div class="text-muted small">150 MB</div>
+                                </div>
+                                <button class="btn-outline-3d btn-sm">Download</button>
+                            </div>
+                            
+                            <div class="download-item">
+                                <div class="flex-grow-1">
+                                    <div class="fw-medium">Subway Surfers (Web Version)</div>
+                                    <div class="text-muted small">Instant Play</div>
+                                </div>
+                                <button class="btn-outline-3d btn-sm">Play Now</button>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-warning mt-3" id="installInstructions">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Install Instructions:</strong> To play on PC or mobile browser, open https://subwaysurfersonline.io/. For Android or iOS, download from your respective app store.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Devlog Section -->
+                <div class="game-info-card mt-4 data-loading" style="animation-delay: 0.7s">
+                    <h3 class="section-title">
+                        <i class="fas fa-newspaper"></i> Development Log
+                    </h3>
+                    
+                    <div class="space-y-3" id="devlogList">
+                        <div class="devlog-item">
+                            <div class="fw-bold">World Tour: Tokyo Update!</div>
+                            <div class="text-muted small">October 10, 2025</div>
+                        </div>
+                        
+                        <div class="devlog-item">
+                            <div class="fw-bold">Subway Surfers 13th Anniversary!</div>
+                            <div class="text-muted small">September 5, 2025</div>
+                        </div>
+                        
+                        <div class="devlog-item">
+                            <div class="fw-bold">New Character: Kenji joins the race!</div>
+                            <div class="text-muted small">August 15, 2025</div>
+                        </div>
+                        
+                        <div class="devlog-item">
+                            <div class="fw-bold">Bug fixes and performance improvements</div>
+                            <div class="text-muted small">July 29, 2025</div>
+                        </div>
+                        
+                        <div class="devlog-item">
+                            <div class="fw-bold">World Tour: Paris Update Released!</div>
+                            <div class="text-muted small">July 1, 2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Comments -->
+                <div class="game-info-card mt-4 data-loading" style="animation-delay: 0.8s">
+                    <h3 class="section-title">
+                        <i class="fas fa-comments"></i> Recent Comments (251,090 total)
+                    </h3>
+                    
+                    <div class="space-y-4" id="commentsList">
+                        <div class="comment-card">
+                            <div class="d-flex justify-content-between mb-2">
+                                <div class="fw-bold text-primary">FastRunner99</div>
+                                <div class="text-muted small">10 minutes ago</div>
+                            </div>
+                            <p class="text-light mb-0">Still one of the best endless runner games ever made!</p>
+                        </div>
+                        
+                        <div class="comment-card">
+                            <div class="d-flex justify-content-between mb-2">
+                                <div class="fw-bold text-primary">Jasmine_Playz</div>
+                                <div class="text-muted small">25 minutes ago</div>
+                            </div>
+                            <p class="text-light mb-0">Loving the new Tokyo map, the visuals are stunning!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn-outline-3d">
+                            <i class="fas fa-comments me-2"></i> View All Comments
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Alpine.js App State
+        function app() {
+            return {
+                // Sidebar state
+                sidebarOpen: window.innerWidth >= 992,
+                
+                // Search state
+                searchQuery: '',
+                searchResults: [],
+                searchLoading: false,
+                showResults: false,
+                mobileSearchOpen: false,
+                
+                // Toggle sidebar
+                toggleSidebar() {
+                    this.sidebarOpen = !this.sidebarOpen;
+                },
+                
+                // Close sidebar
+                closeSidebar() {
+                    this.sidebarOpen = false;
+                },
+                
+                // Toggle mobile search
+                toggleMobileSearch() {
+                    this.mobileSearchOpen = !this.mobileSearchOpen;
+                    if (this.mobileSearchOpen) {
+                        this.showResults = true;
+                    }
+                },
+                
+                // Perform search with debounce
+                performSearch() {
+                    if (this.searchQuery.length < 2) {
+                        this.searchResults = [];
+                        return;
+                    }
+                    
+                    this.searchLoading = true;
+                    
+                    // Simulate API call with timeout
+                    setTimeout(() => {
+                        this.searchResults = [
+                            {
+                                id: 1,
+                                title: 'Subway Surfers',
+                                category: 'Endless Runner',
+                                thumbnail: 'https://www.talkesport.com/wp-content/uploads/Subway-surfers-characters.jpg'
+                            },
+                            {
+                                id: 2,
+                                title: 'Temple Run',
+                                category: 'Endless Runner',
+                                thumbnail: 'https://via.placeholder.com/40x40/6C63FF/FFFFFF?text=TR'
+                            },
+                            {
+                                id: 3,
+                                title: 'Sonic Dash',
+                                category: 'Endless Runner',
+                                thumbnail: 'https://via.placeholder.com/40x40/6C63FF/FFFFFF?text=SD'
+                            },
+                            {
+                                id: 4,
+                                title: 'Minion Rush',
+                                category: 'Endless Runner',
+                                thumbnail: 'https://via.placeholder.com/40x40/6C63FF/FFFFFF?text=MR'
+                            }
+                        ];
+                        this.searchLoading = false;
+                    }, 500);
+                },
+                
+                // Select search result
+                selectSearchResult(result) {
+                    this.searchQuery = result.title;
+                    this.showResults = false;
+                    this.mobileSearchOpen = false;
+                    // In a real app, you would navigate to the game page
+                    console.log('Selected game:', result);
+                },
+                
+                // Close search results when clicking outside
+                init() {
+                    // Close search results when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!e.target.closest('.search-container')) {
+                            this.showResults = false;
+                        }
+                    });
+                    
+                    // Handle window resize
+                    window.addEventListener('resize', () => {
+                        if (window.innerWidth >= 992) {
+                            this.sidebarOpen = true;
+                        } else {
+                            this.sidebarOpen = false;
+                        }
+                    });
+                }
+            }
+        }
+
+        // Game state variables
+        let playTime = 0;
+        let playTimer;
+        let isFavorite = false;
+        let userRating = 0;
+        
+        // Initialize the game controls
+        document.addEventListener('DOMContentLoaded', function() {
+            setupFavoriteButton();
+            setupRatingSystem();
+        });
+        
+        // Load game function
+        function loadGame() {
+            // Hide preview and show game
+            document.getElementById('gamePreview').classList.add('d-none');
+            const wrapper = document.getElementById('gameWrapper');
+            wrapper.classList.remove('d-none');
+            
+            // Load the iframe
+            const frame = document.getElementById('gameFrame');
+            frame.src = frame.getAttribute('data-src');
+            
+            // Show controls
+            document.getElementById('playTimeDisplay').classList.remove('d-none');
+            document.getElementById('screenControls').classList.remove('d-none');
+            
+            // Start play timer
+            startPlayTimer();
+        }
+        
+        // Start play timer
+        function startPlayTimer() {
+            playTimer = setInterval(function() {
+                playTime++;
+                updatePlayTimeDisplay();
+            }, 1000);
+        }
+        
+        // Update play time display
+        function updatePlayTimeDisplay() {
+            const minutes = Math.floor(playTime / 60);
+            const seconds = playTime % 60;
+            const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('playTime').textContent = timeString;
+        }
+        
+        // Reload game function
+        function reloadGame() {
+            const frame = document.getElementById('gameFrame');
+            frame.src = frame.src;
+            
+            // Show reload feedback
+            const restartBtn = document.querySelector('.btn-outline-3d');
+            const originalHTML = restartBtn.innerHTML;
+            restartBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Restarting...</span>';
+            
+            setTimeout(() => {
+                restartBtn.innerHTML = originalHTML;
+            }, 1000);
+        }
+        
+        // Setup favorite button functionality
+        function setupFavoriteButton() {
+            const favoriteBtn = document.getElementById('favoriteBtn');
+            
+            favoriteBtn.addEventListener('click', function() {
+                isFavorite = !isFavorite;
+                
+                if (isFavorite) {
+                    favoriteBtn.innerHTML = '<i class="fas fa-heart"></i><span>Favorited</span>';
+                    favoriteBtn.style.background = 'rgba(255, 107, 157, 0.2)';
+                    showNotification('Game added to favorites!', 'success');
+                } else {
+                    favoriteBtn.innerHTML = '<i class="far fa-heart"></i><span>Favorite</span>';
+                    favoriteBtn.style.background = 'transparent';
+                    showNotification('Game removed from favorites!', 'info');
+                }
+            });
+        }
+        
+        // Toggle theater mode
+        function toggleTheaterMode() {
+            const gameContainer = document.querySelector('.game-container');
+            gameContainer.classList.toggle('theater-mode');
+            
+            if (gameContainer.classList.contains('theater-mode')) {
+                // Add exit button for theater mode
+                const exitBtn = document.createElement('button');
+                exitBtn.className = 'btn-3d theater-controls mt-3';
+                exitBtn.innerHTML = '<i class="fas fa-times"></i> Exit Theater Mode';
+                exitBtn.onclick = toggleTheaterMode;
+                
+                const theaterControls = document.createElement('div');
+                theaterControls.className = 'theater-controls text-center';
+                theaterControls.appendChild(exitBtn);
+                
+                gameContainer.appendChild(theaterControls);
+            } else {
+                // Remove exit button
+                const theaterControls = gameContainer.querySelector('.theater-controls');
+                if (theaterControls) {
+                    theaterControls.remove();
+                }
+            }
+        }
+        
+        // Toggle fullscreen
+        function toggleFullscreen() {
+            const frame = document.getElementById('gameFrame');
+            
+            if (!document.fullscreenElement) {
+                // Enter fullscreen
+                if (frame.requestFullscreen) {
+                    frame.requestFullscreen();
+                } else if (frame.webkitRequestFullscreen) {
+                    frame.webkitRequestFullscreen();
+                } else if (frame.msRequestFullscreen) {
+                    frame.msRequestFullscreen();
+                }
+            } else {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+        
+        // Rating System
+        function setupRatingSystem() {
+            const stars = document.querySelectorAll('.rating-star');
+            
+            stars.forEach(star => {
+                star.addEventListener('mouseover', function() {
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    highlightStars(rating);
+                });
+                
+                star.addEventListener('mouseout', function() {
+                    highlightStars(userRating);
+                });
+                
+                star.addEventListener('click', function() {
+                    userRating = parseInt(this.getAttribute('data-rating'));
+                    submitRating(userRating);
+                });
+            });
+        }
+        
+        function highlightStars(rating) {
+            const stars = document.querySelectorAll('.rating-star');
+            
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                }
+            });
+        }
+        
+        function submitRating(rating) {
+            // In a real app, you would send this to a server
+            const message = document.getElementById('ratingMessage');
+            const messageText = document.getElementById('messageText');
+            
+            messageText.textContent = `Thank you for your ${rating} star rating!`;
+            message.classList.remove('d-none');
+            
+            // Update average rating (simulated)
+            const averageRating = document.getElementById('averageRating');
+            const totalRatings = document.getElementById('totalRatings');
+            
+            // Simple simulation of rating update
+            const currentAvg = parseFloat(averageRating.textContent);
+            const currentTotal = parseInt(totalRatings.textContent.replace(/,/g, ''));
+            const newTotal = currentTotal + 1;
+            const newAvg = ((currentAvg * currentTotal) + rating) / newTotal;
+            
+            averageRating.textContent = newAvg.toFixed(1);
+            totalRatings.textContent = newTotal.toLocaleString();
+            
+            // Hide message after 3 seconds
+            setTimeout(() => {
+                message.classList.add('d-none');
+            }, 3000);
+        }
+        
+        function resetRating() {
+            userRating = 0;
+            highlightStars(0);
+            showNotification('Rating reset!', 'info');
+        }
+        
+        // Share game function
+        function shareGame() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Subway Surfers - Classic Endless Runner Game',
+                    text: 'Check out this amazing endless runner game!',
+                    url: window.location.href
+                })
+                .then(() => console.log('Successful share'))
+                .catch((error) => console.log('Error sharing:', error));
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(window.location.href)
+                    .then(() => showNotification('Game link copied to clipboard!', 'success'))
+                    .catch(() => showNotification('Failed to copy link', 'error'));
+            }
+        }
+        
+        // Show notification
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `position-fixed top-0 end-0 m-3 p-3 rounded shadow ${
+                type === 'success' ? 'bg-success' : type === 'error' ? 'bg-danger' : 'bg-info'
+            } text-white`;
+            notification.textContent = message;
+            notification.style.zIndex = '1050';
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Handle fullscreen change events
+        document.addEventListener('fullscreenchange', function() {
+            // You can add additional logic here if needed
+        });
+    </script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
