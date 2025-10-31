@@ -902,6 +902,43 @@
             animation-delay: 0.8s;
             opacity: 0;
         }
+
+        .about-content {
+    line-height: 1.6;
+}
+
+.feature-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 15px;
+    border-radius: 8px;
+    border-left: 3px solid var(--primary);
+}
+
+.about-stats-card, .key-features-card {
+    background: rgba(30, 41, 59, 0.8);
+    border: 2px solid rgba(157, 78, 221, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.stat-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.key-features-card li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.key-features-card li:last-child {
+    border-bottom: none;
+}
     </style>
 </head>
 <body x-data="app()">
@@ -1400,6 +1437,149 @@ msallowfullscreen="true"></iframe>
                         </div>
                     </div>
                 </div>
+
+                    <!-- About This Game Section -->
+<div class="game-info-card mt-4">
+    <h3 class="section-title">
+        <i class="fas fa-info-circle"></i> About This Game
+    </h3>
+    
+    <div class="about-content">
+        <div class="row">
+            <div class="col-lg-8">
+                <h4 class="mb-3 text-primary">What is Subway Surfers?</h4>
+                <p class="text-light mb-4">
+                    Subway Surfers is a classic endless runner mobile game developed by Kiloo and SYBO Games. 
+                    Since its release in 2012, it has become one of the most popular and enduring mobile games, 
+                    with over 3 billion downloads worldwide.
+                </p>
+                
+                <h5 class="mb-3 text-accent">Game Story & Concept</h5>
+                <p class="text-light mb-4">
+                    In Subway Surfers, you play as a graffiti-tagging teenager who is caught in the act by a 
+                    grumpy inspector and his dog. You must run along the subway tracks to escape, dodging 
+                    oncoming trains, barriers, and other obstacles while collecting coins and power-ups.
+                </p>
+                
+                <h5 class="mb-3 text-accent">Gameplay Mechanics</h5>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="feature-item mb-3">
+                            <i class="fas fa-running text-primary me-2"></i>
+                            <span class="fw-bold">Endless Running:</span> Continuously run forward on subway tracks
+                        </div>
+                        <div class="feature-item mb-3">
+                            <i class="fas fa-exchange-alt text-primary me-2"></i>
+                            <span class="fw-bold">Three-Lane System:</span> Swipe left/right to change lanes
+                        </div>
+                        <div class="feature-item mb-3">
+                            <i class="fas fa-arrow-up text-primary me-2"></i>
+                            <span class="fw-bold">Jump & Roll:</span> Swipe up to jump, down to roll under obstacles
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="feature-item mb-3">
+                            <i class="fas fa-coins text-warning me-2"></i>
+                            <span class="fw-bold">Coin Collection:</span> Collect coins to purchase items
+                        </div>
+                        <div class="feature-item mb-3">
+                            <i class="fas fa-rocket text-danger me-2"></i>
+                            <span class="fw-bold">Power-ups:</span> Use jetpacks, super sneakers, coin magnets
+                        </div>
+                        <div class="feature-item mb-3">
+                            <i class="fas fa-train text-info me-2"></i>
+                            <span class="fw-bold">Hoverboards:</span> Ride hoverboards for temporary protection
+                        </div>
+                    </div>
+                </div>
+                
+                <h5 class="mb-3 text-accent">Characters & Customization</h5>
+                <p class="text-light mb-4">
+                    Subway Surfers features a diverse cast of characters, each with unique styles and personalities. 
+                    You can unlock new characters using coins or keys, and customize them with different outfits. 
+                    Popular characters include Jake, Tricky, Fresh, and many more from cities around the world.
+                </p>
+                
+                <h5 class="mb-3 text-accent">World Tour Feature</h5>
+                <p class="text-light mb-4">
+                    Every few weeks, Subway Surfers updates with a new World Tour location, transporting players 
+                    to famous cities around the globe. Each location features unique visuals, obstacles, and a 
+                    special limited-time character to unlock.
+                </p>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="about-stats-card p-3 mb-4">
+                    <h5 class="text-center mb-3 text-primary">Game Statistics</h5>
+                    <div class="stat-item d-flex justify-content-between mb-2">
+                        <span class="text-light">Release Date:</span>
+                        <span class="fw-bold">May 24, 2012</span>
+                    </div>
+                    <div class="stat-item d-flex justify-content-between mb-2">
+                        <span class="text-light">Downloads:</span>
+                        <span class="fw-bold">3+ Billion</span>
+                    </div>
+                    <div class="stat-item d-flex justify-content-between mb-2">
+                        <span class="text-light">Platforms:</span>
+                        <span class="fw-bold">iOS, Android, Windows</span>
+                    </div>
+                    <div class="stat-item d-flex justify-content-between mb-2">
+                        <span class="text-light">Daily Players:</span>
+                        <span class="fw-bold">10+ Million</span>
+                    </div>
+                    <div class="stat-item d-flex justify-content-between mb-2">
+                        <span class="text-light">Countries:</span>
+                        <span class="fw-bold">200+</span>
+                    </div>
+                </div>
+                
+                <div class="key-features-card p-3">
+                    <h5 class="text-center mb-3 text-accent">Key Features</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Colorful, vibrant 3D graphics
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Simple one-touch controls
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Regular content updates
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Dozens of characters to unlock
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Global leaderboards
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Mission system for goals
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Weekly Hunts for rewards
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <h5 class="mb-3 text-accent">Why Subway Surfers Remains Popular</h5>
+            <p class="text-light">
+                Subway Surfers has maintained its popularity for over a decade due to its simple yet addictive gameplay, 
+                regular content updates with the World Tour feature, colorful graphics that appeal to all ages, and 
+                satisfying progression system. The game strikes a perfect balance between casual play and competitive 
+                high-score chasing, making it accessible to newcomers while still challenging for experienced players.
+            </p>
+        </div>
+    </div>
+</div>
                 
                 <!-- Recent Comments -->
                 <div class="game-info-card mt-4 data-loading" style="animation-delay: 0.8s">
